@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const verificarToken = require('../middlewares/token'); 
 const User = require('../models/usuarios');
 const Product = require('../models/productos');
+
 
 
 // insertar algo en la ruta de la BD
@@ -91,8 +93,7 @@ router.get('/deleteUser/:id', async(req,res)=>{
 });
 
 
-// agregar productos
-router.post('/addProduct', async (req,res)=>{
+router.post('/addProduct', verificarToken, async (req, res) => {
     const product = new Product({
         name: req.body.name,
         description: req.body.description,
@@ -111,8 +112,9 @@ router.post('/addProduct', async (req,res)=>{
     }
 });
 
+
 // obtener productos
-router.get('/productos', async(req,res)=>{
+router.get('/productos', verificarToken, async(req,res)=>{
     try {
         const products = await Product.find().exec();
         console.log(products)
@@ -127,7 +129,7 @@ router.get('/productos', async(req,res)=>{
 
 
 // editar productos
-router.get('/updateProduct/:id', async(req,res)=>{
+router.get('/updateProduct/:id', verificarToken, async(req,res)=>{
     let id = req.params.id;
     const ObjectId = require('mongodb').ObjectId;
     const idO = new ObjectId(id);
@@ -150,7 +152,7 @@ router.get('/updateProduct/:id', async(req,res)=>{
 
 
 // eliminar productos
-router.get('/deleteProducto/:id', async(req,res)=>{
+router.get('/deleteProducto/:id', verificarToken, async(req,res)=>{
     let id = req.params.id;
     const ObjectId = require('mongodb').ObjectId;
     const idO = new ObjectId(id);

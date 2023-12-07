@@ -13,10 +13,10 @@ const PORT = process.env.PORT || 4000;
 mongoose.connect(process.env.DB_URI);
 const db = mongoose.connection;
 db.on('error', (error) => console.log(error));
-db.once('open', ()=> console.log(("Connenected to DataBase")))
+db.once('open', () => console.log(("Connenected to DataBase")))
 
 //middlewares
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(session({
@@ -25,7 +25,7 @@ app.use(session({
     resave: false,
 }))
 
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
     res.locals.message = req.session.message;
     delete req.session.message;
     next();
@@ -34,14 +34,20 @@ app.use((req, res, next)=>{
 // establecer plantillas del motor
 app.set('view engine', 'ejs');
 
+app.use("/auth", require("./middlewares/auth"));
+
+
+app.use("/routes/auth", require('./routes/routes'));
+
+
 
 // prefijo de ruta
 
-app.use("",require('./routes/routes'))
+//app.use("",require('./routes/routes'))
 // app.get('/', (req,res)=>{
 //     res.send('Hello World')
 // })
 
-app.listen(PORT, ()=>{
+app.listen(PORT, () => {
     console.log(`Server is running on port http://localhost:${PORT}`)
 })
