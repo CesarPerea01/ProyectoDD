@@ -41,23 +41,23 @@ router.get('/usuarios', async(req, res)=>{
 });
 
 //editar un usuario (obtenerlo realmente, como para mostrar los datos por pantalla para editarlos, no se usa)
-router.get('/editUser/:id', async (req,res)=>{
-    let {id}=req.params.id;
-    try {
-        const user = await  User.findById(id);
-        if(user==null){
-            res.send('Usuario no encontrado');
-        }else{
-            console.log(user)
-        }
-    } catch (err) {
-        res.json({message: err.message})
-    }
+// router.get('/editUser/:id', async (req,res)=>{
+//     let {id}=req.params.id;
+//     try {
+//         const user = await  User.findById(id);
+//         if(user==null){
+//             res.send('Usuario no encontrado');
+//         }else{
+//             console.log(user)
+//         }
+//     } catch (err) {
+//         res.json({message: err.message})
+//     }
     
-});
+// });
 
 // actualizar usuarios
-router.post('/updateUser/:id', async(req,res)=>{
+router.put('/updateUser/:id', async(req,res)=>{
     let id = req.params.id;
     const ObjectId = require('mongodb').ObjectId;
     const idO = new ObjectId(id);
@@ -79,7 +79,7 @@ router.post('/updateUser/:id', async(req,res)=>{
 });
 
 // eliminar usuarios
-router.get('/deleteUser/:id', async(req,res)=>{
+router.delete('/deleteUser/:id', async(req,res)=>{
     let id = req.params.id;
     const ObjectId = require('mongodb').ObjectId;
     const idO = new ObjectId(id);
@@ -129,7 +129,7 @@ router.get('/productos', verificarToken, async(req,res)=>{
 
 
 // editar productos
-router.get('/updateProduct/:id', verificarToken, async(req,res)=>{
+router.put('/updateProduct/:id', verificarToken, async(req,res)=>{
     let id = req.params.id;
     const ObjectId = require('mongodb').ObjectId;
     const idO = new ObjectId(id);
@@ -152,7 +152,7 @@ router.get('/updateProduct/:id', verificarToken, async(req,res)=>{
 
 
 // eliminar productos
-router.get('/deleteProducto/:id', verificarToken, async(req,res)=>{
+router.delete('/deleteProducto/:id', verificarToken, async(req,res)=>{
     let id = req.params.id;
     const ObjectId = require('mongodb').ObjectId;
     const idO = new ObjectId(id);
