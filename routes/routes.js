@@ -7,7 +7,7 @@ const Product = require('../models/productos');
 
 
 // insertar algo en la ruta de la BD
-router.post('/addUser', async (req,res)=>{
+router.post('/addUser', verificarToken, async (req,res)=>{
     const user = new User({
         name: req.body.name,
         email: req.body.email,
@@ -27,7 +27,7 @@ router.post('/addUser', async (req,res)=>{
 });
 
 // obtener los usuarios
-router.get('/usuarios', async(req, res)=>{
+router.get('/usuarios', verificarToken, async(req, res)=>{
     try {
         const users = await User.find().exec();
         console.log(users)
@@ -57,7 +57,7 @@ router.get('/usuarios', async(req, res)=>{
 // });
 
 // actualizar usuarios
-router.put('/updateUser/:id', async(req,res)=>{
+router.put('/updateUser/:id', verificarToken, async(req,res)=>{
     let id = req.params.id;
     const ObjectId = require('mongodb').ObjectId;
     const idO = new ObjectId(id);
@@ -79,7 +79,7 @@ router.put('/updateUser/:id', async(req,res)=>{
 });
 
 // eliminar usuarios
-router.delete('/deleteUser/:id', async(req,res)=>{
+router.delete('/deleteUser/:id', verificarToken, async(req,res)=>{
     let id = req.params.id;
     const ObjectId = require('mongodb').ObjectId;
     const idO = new ObjectId(id);
