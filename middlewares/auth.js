@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const User = require('../models/usuarios');
+require('dotenv').config();
+
 
 // Endpoint de inicio de sesión
 router.post('/auth', async (req, res) => {
@@ -10,23 +12,18 @@ router.post('/auth', async (req, res) => {
   try {
     // Buscar al usuario en la base de datos por correo electrónico y contraseña
     const usuarioEncontrado = await User.findOne({ email, pass });
-    req.session.token = null;
-
 
     if (!usuarioEncontrado) {
       return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
-      
     }
 
-    // Generar token JWT
-    const token = jwt.sign({ id: usuarioEncontrado._id, email: usuarioEncontrado.email }, 'secretoJWT', { expiresIn: '60s' });
+    // Generar token JWT utilizando el secreto cargado desde .env
+    const token = jwt.sign({ id: usuarioEncontrado._id, email: usuarioEncontrado.email }, process.env.TOKEN_SECRET, { expiresIn: '3m' });
 
-    // Almacenar el token en la sesión del servidor
-    req.session.token = token;
+    // Almacenar el token en el encabezado de la respuesta (res)
+    res.header('Authorization', `Bearer ${token}`).json({ mensaje: 'Inicio de sesión exitoso', token });
 
-    res.status(200).json({ mensaje: 'Inicio de sesión exitoso', token });
 
-  
   } catch (error) {
     res.status(500).json({ mensaje: 'Error en la autenticación' });
   }
