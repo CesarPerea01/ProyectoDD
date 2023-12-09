@@ -31,10 +31,11 @@ router.get('/usuarios', verificarToken, async(req, res)=>{
     try {
         const users = await User.find().exec();
         console.log(users)
-        res.render('index', {
-            title: "Home Page",
-            users: users,
-        });
+        res.json(users)
+        // res.render('index', {
+        //     title: "Home Page",
+        //     users: users,
+        // });
     } catch (err) {
         res.json({message: err.message});
     }
@@ -118,10 +119,11 @@ router.get('/productos', verificarToken, async(req,res)=>{
     try {
         const products = await Product.find().exec();
         console.log(products)
-        res.render('index', {
-            title: "Home Page",
-            products: products,
-        });
+        res.json(products)
+        // res.render('index', {
+        //     title: "Home Page",
+        //     products: products,
+        // });
     } catch (err) {
         res.json({message: err.message});
     }
